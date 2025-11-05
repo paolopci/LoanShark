@@ -16,62 +16,82 @@
         fields
         below and click calculate to see your personalized results.
     </p>
-    <div class="row">
+    <div class="row g-4">
         <div class="col-12 col-md-6">
-            <EditForm EditContext="editContext">
-                <DataAnnotationsValidator />
-                <div class="row gy-3">
-                    <div class="col-12">
-                        <div class="row align-items-center">
-                            <label for="purchaseAmount" class="col-4 col-form-label text-end pe-3">Purchase
-                                Amount:</label>
-                            <div class="col-8">
-                                <InputNumber class="form-control" id="purchaseAmount" step="100"
-                                    @bind-Value="loan.PurchaseAmount" />
-                                <ValidationMessage For="() => loan.PurchaseAmount" />
+            <div class="border p-3 h-100">
+                <EditForm EditContext="editContext">
+                    <DataAnnotationsValidator />
+                    <div class="row gy-3">
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="purchaseAmount" class="col-4 col-form-label text-end pe-3">Purchase
+                                    Amount:</label>
+                                <div class="col-8">
+                                    <InputNumber class="form-control" id="purchaseAmount" step="100"
+                                        @bind-Value="loan.PurchaseAmount" />
+                                    <ValidationMessage For="() => loan.PurchaseAmount" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="row align-items-center">
-                            <label for="loanTerm" class="col-4 col-form-label text-end pe-3">Loan Term in Years:</label>
-                            <div class="col-8">
-                                <InputNumber class="form-control" id="loanTerm" @bind-Value="loan.Rate" min="1" />
-                                <ValidationMessage For="() => loan.Term" />
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="loanTerm" class="col-4 col-form-label text-end pe-3">Loan Term in
+                                    Years:</label>
+                                <div class="col-8">
+                                    <InputNumber class="form-control" id="loanTerm" @bind-Value="loan.Rate" min="1" />
+                                    <ValidationMessage For="() => loan.Term" />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="row align-items-center">
-                            <label for="loanRate" class="col-4 col-form-label text-end pe-3">Rate:</label>
-                            <div class="col-8">
-                                <InputNumber class="form-control" id="loanRate" @bind-Value="loan.Rate" min="0"
-                                    step=".1" />
-                                <ValidationMessage For="() => loan.Rate" />
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="loanRate" class="col-4 col-form-label text-end pe-3">Rate:</label>
+                                <div class="col-8">
+                                    <InputNumber class="form-control" id="loanRate" @bind-Value="loan.Rate" min="0"
+                                        step=".1" />
+                                    <ValidationMessage For="() => loan.Rate" />
+                                </div>
                             </div>
                         </div>
+                        <div class="text-end mt-4">
+                            <button class="btn btn-primary mt-2" type="submit">Calculate</button>
+                        </div>
                     </div>
-                    <div class="text-end">
-                        <button class="btn btn-primary mt-2" type="submit">Calculate</button>
-                    </div>
-                </div>
-            </EditForm>
+                </EditForm>
+            </div>
         </div>
         <div class="col-12 col-md-6">
-            @* <div>
-                <p>Monthly Title</p>
-            </div> *@
-            @* <div class="display-6">@loan.Payment.ToString("C", CultureInfo.CurrentCulture)</div> *@
-            <div class="row border border-1 g-0 p-0">
-                <div class="col-4">
-                    <label class="text-start">Purchase Amount</label>
+            <div class="border p-3 h-100">
+                <div>
+                    <p class="display-6 text-center">Your Monthly Payments</p>
                 </div>
-                <div class="col-8 text-end">
-                    @loan.PurchaseAmount.ToString("C", CultureInfo.CurrentCulture)
+                <div class="display-6 text-center">@loan.Payment.ToString("C", CultureInfo.CurrentCulture)</div>
+                <div class="row g-0 p-0">
+                    <div class="col-4">
+                        <label class="text-start">Purchase Amount</label>
+                    </div>
+                    <div class="col-8 text-end">
+                        @loan.PurchaseAmount.ToString("C", CultureInfo.CurrentCulture)
+                    </div>
+                    <div class="col-4">
+                        <label class="text-start">Total Interest</label>
+                    </div>
+                    <div class="col-8 text-end">
+                        @loan.TotalInterest.ToString("C", CultureInfo.CurrentCulture)
+                    </div>
+                    <div class="col-4">
+                        <label class="text-start">Total Cost</label>
+                    </div>
+                    <div class="col-8 text-end">
+                        @loan.TotalCost.ToString("C", CultureInfo.CurrentCulture)
+                    </div>
+                    <div class="text-end mt-1">
+                        <button class="btn btn-primary">Show Schedulare</button>
+                    </div>
+
                 </div>
 
             </div>
-
         </div>
     </div>
 </div>
