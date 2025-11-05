@@ -1,0 +1,8 @@
+.card-sx {
+    background-color: rgb(227, 226, 226);
+    border-radius: 0.5rem;
+}
+
+.totalCost {
+    font-weight: bold;
+}
