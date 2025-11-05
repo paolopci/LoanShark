@@ -5,7 +5,7 @@ namespace MortgageCalculator.Models
     public class Loan
     {
         [Required]
-        [Range(1, double.MaxValue, ErrorMessage = "Purchase Amount must be a least $1")]
+        [Range(1, double.MaxValue, ErrorMessage = "Purchase Amount must be at least €1")]
         public double PurchaseAmount { get; set; }
 
 

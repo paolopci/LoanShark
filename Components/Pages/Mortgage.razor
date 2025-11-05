@@ -1,6 +1,92 @@
-﻿@page "/mortgage"
-<h3>Mortgage</h3>
+﻿@page "/calculator"
+@using System.Globalization
+
+
+<div class="container-xxl my-3">
+    <h1 class="mb-2">Loan Calculator </h1>
+    <p>
+        If you've been thinking about borrowing money and are curious to see what payments would look like before you
+        apply, a loan calculator can be an ideal tool to help you figure this out.
+    </p>
+    <p>
+        Loan Shark's loan calculator was designed to help borrowers calculate amortized loans. These are mortgages,
+        auto loans, student loans and other types of personal loans that are paid off in regular installments over time,
+        with fixed payments covering both the principal amount and interest. Our calculator shows you the total cost of
+        a loan, expressed as the annual percentage rate, or APR. Enter the loan amount, term and interest rate in the
+        fields
+        below and click calculate to see your personalized results.
+    </p>
+    <div class="row">
+        <div class="col-12 col-md-6">
+            <EditForm EditContext="editContext">
+                <DataAnnotationsValidator />
+                <div class="row gy-3">
+                    <div class="col-12">
+                        <div class="row align-items-center">
+                            <label for="purchaseAmount" class="col-4 col-form-label text-end pe-3">Purchase
+                                Amount:</label>
+                            <div class="col-8">
+                                <InputNumber class="form-control" id="purchaseAmount" step="100"
+                                    @bind-Value="loan.PurchaseAmount" />
+                                <ValidationMessage For="() => loan.PurchaseAmount" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row align-items-center">
+                            <label for="loanTerm" class="col-4 col-form-label text-end pe-3">Loan Term in Years:</label>
+                            <div class="col-8">
+                                <InputNumber class="form-control" id="loanTerm" @bind-Value="loan.Rate" min="1" />
+                                <ValidationMessage For="() => loan.Term" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row align-items-center">
+                            <label for="loanRate" class="col-4 col-form-label text-end pe-3">Rate:</label>
+                            <div class="col-8">
+                                <InputNumber class="form-control" id="loanRate" @bind-Value="loan.Rate" min="0"
+                                    step=".1" />
+                                <ValidationMessage For="() => loan.Rate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <button class="btn btn-primary mt-2" type="submit">Calculate</button>
+                    </div>
+                </div>
+            </EditForm>
+        </div>
+        <div class="col-12 col-md-6">
+            @* <div>
+                <p>Monthly Title</p>
+            </div> *@
+            @* <div class="display-6">@loan.Payment.ToString("C", CultureInfo.CurrentCulture)</div> *@
+            <div class="row border border-1 g-0 p-0">
+                <div class="col-4">
+                    <label class="text-start">Purchase Amount</label>
+                </div>
+                <div class="col-8 text-end">
+                    @loan.PurchaseAmount.ToString("C", CultureInfo.CurrentCulture)
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
 
 @code {
+    private Loan loan = new();
+    private EditContext? editContext;
 
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(loan);
+        loan.PurchaseAmount = 25000;
+        loan.Term = 5;
+        loan.Rate = 5.0;
+    }
 }
