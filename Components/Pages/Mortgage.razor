@@ -1,0 +1,135 @@
+﻿@page "/calculator"
+@using System.Globalization
+
+
+<div class="container-xxl my-3">
+    <h1 class="mb-2">Loan Calculator </h1>
+    <p>
+        If you've been thinking about borrowing money and are curious to see what payments would look like before you
+        apply, a loan calculator can be an ideal tool to help you figure this out.
+    </p>
+    <p>
+        Loan Shark's loan calculator was designed to help borrowers calculate amortized loans. These are mortgages,
+        auto loans, student loans and other types of personal loans that are paid off in regular installments over time,
+        with fixed payments covering both the principal amount and interest. Our calculator shows you the total cost of
+        a loan, expressed as the annual percentage rate, or APR. Enter the loan amount, term and interest rate in the
+        fields
+        below and click calculate to see your personalized results.
+    </p>
+    <div class="row g-4">
+        <div class="col-12 col-md-6">
+            <div class="border p-3 h-100 card-sx">
+                <EditForm EditContext="editContext" OnValidSubmit="HandleSubmit">
+                    <DataAnnotationsValidator />
+                    <div class="row gy-3">
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="purchaseAmount" class="col-4 col-form-label text-end pe-3">Purchase
+                                    Amount:</label>
+                                <div class="col-8">
+                                    <InputNumber class="form-control" id="purchaseAmount" step="100"
+                                        @bind-Value="loan.PurchaseAmount" />
+                                    <ValidationMessage For="() => loan.PurchaseAmount" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="loanTerm" class="col-4 col-form-label text-end pe-3">Loan Term in
+                                    Years:</label>
+                                <div class="col-8">
+                                    <InputNumber class="form-control" id="loanTerm" @bind-Value="loan.Term" min="1" />
+                                    <ValidationMessage For="() => loan.Term" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row align-items-center">
+                                <label for="loanRate" class="col-4 col-form-label text-end pe-3">Rate:</label>
+                                <div class="col-8">
+                                    <InputNumber class="form-control" id="loanRate" @bind-Value="loan.Rate" min="0"
+                                        step=".1" />
+                                    <ValidationMessage For="() => loan.Rate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-end mt-4">
+                            <button class="btn btn-primary mt-2" type="submit">Calculate</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="border p-3 h-100">
+                <div>
+                    <p class="display-6 text-center">Your Monthly Payments</p>
+                </div>
+                <div class="display-6 text-center">@loan.Payment.ToString("C", CultureInfo.CurrentCulture)</div>
+                <div class="row g-0 p-0">
+                    <div class="col-4">
+                        <label class="text-start">Purchase Amount</label>
+                    </div>
+                    <div class="col-8 text-end">
+                        @loan.PurchaseAmount.ToString("C", CultureInfo.CurrentCulture)
+                    </div>
+                    <div class="col-4">
+                        <label class="text-start">Total Interest</label>
+                    </div>
+                    <div class="col-8 text-end">
+                        @loan.TotalInterest.ToString("C", CultureInfo.CurrentCulture)
+                    </div>
+                    <div class="col-4">
+                        <label class="text-start">Total Cost</label>
+                    </div>
+                    <div class="col-8 text-end totalCost">
+                        @loan.TotalCost.ToString("C", CultureInfo.CurrentCulture)
+                    </div>
+                    <div class="text-end mt-1">
+                        <button class="btn btn-primary" @onclick="ShowScheduleToggle">@buttonText</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (showSchedule)
+        {
+            <div class="col-12">
+                <PaymentSchedule Payments="loan.Payments" />
+            </div>
+        }
+    </div>
+</div>
+
+
+
+@code {
+
+    private Loan loan = new();
+    private EditContext? editContext;
+    private bool showSchedule = false;
+    string buttonText = "Show Schedule";
+
+    protected override void OnInitialized()
+    {
+        editContext = new EditContext(loan);
+    }
+
+    private void HandleSubmit()
+    {
+        loan = LoanUtils.GetPayments(loan);
+    }
+
+    private void ShowScheduleToggle()
+    {
+        if (showSchedule)
+        {
+            showSchedule = false;
+            buttonText = "Show Schedule";
+        }
+        else
+        {
+            showSchedule = true;
+            buttonText = "Hide Schedule";
+        }
+    }
+}
