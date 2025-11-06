@@ -86,11 +86,17 @@
                         @loan.TotalCost.ToString("C", CultureInfo.CurrentCulture)
                     </div>
                     <div class="text-end mt-1">
-                        <button class="btn btn-primary">Show Schedulare</button>
+                        <button class="btn btn-primary" @onclick="ShowScheduleToggle">@buttonText</button>
                     </div>
                 </div>
             </div>
         </div>
+        @if (showSchedule)
+        {
+            <div class="col-12">
+                <PaymentSchedule Payments="loan.Payments" />
+            </div>
+        }
     </div>
 </div>
 
@@ -100,15 +106,30 @@
 
     private Loan loan = new();
     private EditContext? editContext;
+    private bool showSchedule = false;
+    string buttonText = "Show Schedule";
 
     protected override void OnInitialized()
     {
-
         editContext = new EditContext(loan);
     }
 
     private void HandleSubmit()
     {
         loan = LoanUtils.GetPayments(loan);
+    }
+
+    private void ShowScheduleToggle()
+    {
+        if (showSchedule)
+        {
+            showSchedule = false;
+            buttonText = "Show Schedule";
+        }
+        else
+        {
+            showSchedule = true;
+            buttonText = "Hide Schedule";
+        }
     }
 }
